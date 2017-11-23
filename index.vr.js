@@ -10,12 +10,32 @@ import {
 
 } from 'react-vr';
 
+const places = [
+    {
+        title: 'Paradise Island',
+        image: 'island-garden.jpg'
+    },
+    {
+        title: 'Starry Night',
+        image: 'starry-sky.jpg'
+    },
+    {
+        title: 'Winter Outdoors',
+        image: 'winter-outdoor.jpg'
+    },
+    {
+        title: 'Light Show',
+        image: 'light-show.jpg'
+    }
+];
+
 
 class WorldTour extends Component {
     constructor() {
         super();
         this.state = {
-            showMenu: false
+            showMenu: false,
+            place: 'starry-sky.jpg'
         }
     }
 
@@ -24,14 +44,36 @@ class WorldTour extends Component {
     render() {
         return (
             <View>
-                <Pano source={asset('starry-sky.jpg')}/>
+                <Pano source={asset(this.state.place)}/>
                 <View
-                    style={styles.menuButton}
+                    style={styles.mainMenuButton}
                     onEnter = {() => this.toggleMenu()}>
                     <Text style={styles.menuButtonText}>
                         {this.state.showMenu ? 'Close Menu' : 'Open Menu'}
                     </Text>
                 </View>
+                {
+                    this.state.showMenu ?
+                        <View style={styles.menu}>
+                            {
+                                places.map((place, index) => {
+                                    return(
+                                        <View
+                                            key={index}
+                                            style={styles.menuItem}
+                                            onEnter={() => this.setState({place: place.image})}
+                                        >
+                                                <Text style={styles.menuItemText}>
+                                                    {place.title}
+                                                </Text>
+                                        </View>
+                                    )
+                                })
+                            }
+                        </View>
+                    :
+                        <View></View>
+                }
             </View>
         )
     }
@@ -46,6 +88,18 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         transform: [
             {translate: [-2, 0, -7.5]}
+        ]
+    },
+    mainMenuButton: {
+        backgroundColor: '#fff',
+        borderRadius: 0.25,
+        width: 0.5,
+        height: 0.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 0.01,
+        transform: [
+            {translate: [-1.95, 1, -5]}
         ]
     },
     menuButton: {
